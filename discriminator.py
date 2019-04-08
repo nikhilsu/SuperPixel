@@ -2,9 +2,10 @@ from keras import Sequential, Input, Model
 from keras.layers import Dense, Conv2D, BatchNormalization, LeakyReLU, Dropout, ZeroPadding2D, Flatten
 
 from config import Config
+from gancomponent import GANComponent
 
 
-class Discriminator(object):
+class Discriminator(GANComponent):
     def __init__(self):
         model = Sequential()
 
@@ -32,15 +33,7 @@ class Discriminator(object):
 
         self.model = Model(input_img, validity)
         self.model.trainable = False
+        super().__init__(model)
 
-    def compile(self):
-        self.model.compile(loss='binary_crossentropy',
-                           optimizer=Config.optimizer(),
-                           metrics=['accuracy'])
-
-    def setup_input_tensor(self, tensor):
-        return self.model(tensor)
-
-    def train_on_batch(self, input_tensor, output_tensor):
-        self.model.train_on_batch(input_tensor, output_tensor)
-
+    def compile_model(self):
+        super().compile(metrics=['accuracy'])

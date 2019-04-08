@@ -2,9 +2,10 @@ from keras import Sequential, Input, Model
 from keras.layers import Dense, Reshape, UpSampling2D, Conv2D, BatchNormalization, Activation
 
 from config import Config
+from gancomponent import GANComponent
 
 
-class Generator(object):
+class Generator(GANComponent):
     def __init__(self):
         model = Sequential()
 
@@ -24,10 +25,7 @@ class Generator(object):
         input_img = Input(shape=Config.low_res_img_dims())
         high_res_output_img = model(input_img)
 
-        self.model = Model(input_img, high_res_output_img)
+        super().__init__(Model(input_img, high_res_output_img))
 
-    def compile(self):
-        self.model.compile(loss='binary_crossentropy', optimizer=Config.optimizer())
-
-    def setup_input_tensor(self, tensor):
-        return self.model(tensor)
+    def compile_model(self):
+        super().compile()
