@@ -21,9 +21,13 @@ class Generator(object):
         model.add(Conv2D(Config.channels(), kernel_size=3, padding="same"))
         model.add(Activation("tanh"))
 
-        model.summary()
+        input_img = Input(shape=Config.low_res_img_dims())
+        high_res_output_img = model(input_img)
 
-        noise = Input(shape=Config.low_res_img_dims())
-        img = model(noise)
+        self.model = Model(input_img, high_res_output_img)
 
-        self.model = Model(noise, img)
+    def compile(self):
+        self.model.compile(loss='binary_crossentropy', optimizer=Config.optimizer())
+
+    def setup_input_tensor(self, tensor):
+        return self.model(tensor)

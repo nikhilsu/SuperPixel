@@ -31,3 +31,16 @@ class Discriminator(object):
         validity = model(input_img)
 
         self.model = Model(input_img, validity)
+        self.model.trainable = False
+
+    def compile(self):
+        self.model.compile(loss='binary_crossentropy',
+                           optimizer=Config.optimizer(),
+                           metrics=['accuracy'])
+
+    def setup_input_tensor(self, tensor):
+        return self.model(tensor)
+
+    def train_on_batch(self, input_tensor, output_tensor):
+        self.model.train_on_batch(input_tensor, output_tensor)
+
