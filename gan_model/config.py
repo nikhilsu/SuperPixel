@@ -19,5 +19,17 @@ class Config:
         return 32
 
     @staticmethod
-    def epochs():
-        return 1000
+    def epochs(small=False):
+        return 100 if small else 1000
+
+    @staticmethod
+    def checkpoint_reached(epoch):
+        return epoch % 1 == 0
+
+    @staticmethod
+    def checkpoint_batch_size():
+        return 50
+
+    @staticmethod
+    def checkpoint_output():
+        return 'checkpoint_images'
