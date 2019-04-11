@@ -9,7 +9,8 @@ class Discriminator(GANComponent):
     def __init__(self):
         model = Sequential()
 
-        model.add(Conv2D(32, kernel_size=3, strides=2, input_shape=Config.high_res_img_shape(), padding="same"))
+        model.add(Conv2D(32, kernel_size=3, strides=2, input_shape=Config.image_shape(), padding="same",
+                         data_format="channels_last"))
         model.add(LeakyReLU(alpha=0.2))
         model.add(Dropout(0.25))
         model.add(Conv2D(64, kernel_size=3, strides=2, padding="same"))
@@ -28,7 +29,7 @@ class Discriminator(GANComponent):
         model.add(Flatten())
         model.add(Dense(1, activation='sigmoid'))
 
-        input_img = Input(shape=Config.high_res_img_shape())
+        input_img = Input(shape=Config.image_shape())
         validity = model(input_img)
 
         self.model = Model(input_img, validity)

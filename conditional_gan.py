@@ -7,7 +7,7 @@ from gancomponent import GANComponent
 class CGAN(GANComponent):
     def __init__(self, generator, discriminator):
         discriminator.compile_model()
-        generator_input_tensor = Input(shape=(Config.low_res_img_dims()))
+        generator_input_tensor = Input(shape=(Config.image_shape()))
         generator_output_tensor = generator.setup_input_tensor(generator_input_tensor)
 
         discriminator_output = discriminator.setup_input_tensor(generator_output_tensor)
