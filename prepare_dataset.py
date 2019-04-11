@@ -21,7 +21,7 @@ class Constants(object):
 
     @staticmethod
     def batch_size():
-        return 2000
+        return 10000
 
 
 class ResizeImage(object):
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     for example in tqdm(pool.imap(ResizeImage(path), images), total=len(images), desc='Preparing Dataset'):
         dataset_chunk.append(example)
         if count % Constants.batch_size() == 0:
-            flush_to_disk(dataset_chunk, count / Constants.batch_size(), Constants.output_directory())
+            flush_to_disk(dataset_chunk, int(count / Constants.batch_size()), Constants.output_directory())
             del dataset_chunk[:]
         count += 1
     pool.close()
