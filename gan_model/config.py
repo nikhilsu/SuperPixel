@@ -20,7 +20,7 @@ class Config:
 
     @staticmethod
     def epochs(small=False):
-        return 100 if small else 1000
+        return 100 if small else 10000
 
     @staticmethod
     def checkpoint_reached(epoch):

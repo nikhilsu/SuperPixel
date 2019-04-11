@@ -7,6 +7,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 import cv2
+import sys
 
 
 def normalize_image(image):
@@ -38,11 +39,11 @@ def flush_image_pair_to_disk(generator, image_pairs, i):
         cv2.imwrite(os.path.join(checkpoint_dir, 'ground_truth_{}.jpg'.format(i)), ground_truth)
 
 
-def train():
+def train(dataset_path):
     generator, discriminator = Generator(), Discriminator()
     gan = CGAN(generator, discriminator)
     gan.compile_model()
-    dataset = np.load('dataset/100.npy')
+    dataset = np.load(dataset_path)
 
     # Normalize input
     dataset = normalize_image(dataset)
@@ -73,4 +74,9 @@ def train():
 
 
 if __name__ == '__main__':
-    train()
+    if ('LOCAL' not in os.environ) and len(sys.argv) != 2:
+        print('Usage: python prepare_dataset.py <path_to_dataset>')
+        sys.exit(1)
+
+    path = sys.argv[1] if len(sys.argv) == 2 else 'dataset/100.npy'
+    train(path)

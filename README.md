@@ -20,6 +20,6 @@ SuperPixel
 
 ##### Train Model
 
-```bash
-$ python main.py
+```
+python main.py <path_to_dataset_numpy_arr>
 ```
