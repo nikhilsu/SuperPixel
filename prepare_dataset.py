@@ -27,11 +27,7 @@ def resize_to_std_resolution(image_name, path_to_dataset):
 
 
 def fetch_image_names(path_to_dataset):
-    image_names = []
-    for _, _, filenames in os.walk(os.path.join(path_to_dataset, 'data')):
-        image_names.extend(filenames)
-        break
-    return image_names
+    return next(os.walk(os.path.join(path_to_dataset, 'data')))[2]
 
 
 if __name__ == '__main__':
