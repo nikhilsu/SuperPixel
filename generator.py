@@ -28,4 +28,4 @@ class Generator(GANComponent):
         super().__init__(Model(input_img, high_res_output_img))
 
     def compile_model(self):
-        super().compile()
+        super()._compile()

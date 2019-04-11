@@ -5,7 +5,7 @@ class GANComponent(object):
     def __init__(self, model):
         self.model = model
 
-    def compile(self, loss='binary_crossentropy', optimizer=Config.optimizer, metrics=None):
+    def _compile(self, loss='binary_crossentropy', optimizer=Config.adam_optimizer, metrics=None):
         self.model.compile(loss=loss, optimizer=optimizer, metrics=metrics)
 
     def setup_input_tensor(self, tensor):

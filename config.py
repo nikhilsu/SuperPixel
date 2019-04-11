@@ -20,5 +20,5 @@ class Config:
         return dims[0], dims[1], Config.channels()
 
     @staticmethod
-    def optimizer():
+    def adam_optimizer():
         return Adam(0.0002, 0.5)

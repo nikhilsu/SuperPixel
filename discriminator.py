@@ -36,4 +36,4 @@ class Discriminator(GANComponent):
         super().__init__(model)
 
     def compile_model(self):
-        super().compile(metrics=['accuracy'])
+        super()._compile(metrics=['accuracy'])
