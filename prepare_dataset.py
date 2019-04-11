@@ -21,7 +21,7 @@ class Constants(object):
 
     @staticmethod
     def batch_size():
-        return 1000
+        return 2000
 
 
 class ResizeImage(object):
@@ -44,12 +44,8 @@ def fetch_image_names(path_to_dataset):
     return next(os.walk(path_to_dataset))[2]
 
 
-def save_to_disk_in_batches(array, chunk_size, output_path):
-    num_of_chunks = int(len(array) / chunk_size)
-    i = 0
-    for chunk in tqdm(np.array_split(array, num_of_chunks), desc='Flushing to Disk'):
-        np.save(os.path.join(output_path, '{}.npy'.format(str(i))), chunk, fix_imports=False)
-        i += 1
+def flush_to_disk(arr, i, output_dir):
+    np.save(os.path.join(output_dir, '{}.npy'.format(str(i))), arr, fix_imports=False)
 
 
 if __name__ == '__main__':
@@ -61,10 +57,14 @@ if __name__ == '__main__':
     images = fetch_image_names(path)
 
     pool = Pool(cpu_count())
-    dataset_array = np.array([example for example in
-                              tqdm(pool.imap(ResizeImage(path), images), total=len(images), desc='Processing Images')])
+    os.makedirs(Constants.output_directory(), exist_ok=True)
+    count = 0
+    dataset_chunk = []
+    for example in tqdm(pool.imap(ResizeImage(path), images), total=len(images), desc='Preparing Dataset'):
+        dataset_chunk.append(example)
+        if count % Constants.batch_size() == 0:
+            flush_to_disk(dataset_chunk, count / Constants.batch_size(), Constants.output_directory())
+            del dataset_chunk[:]
+        count += 1
     pool.close()
     pool.join()
-
-    os.makedirs(Constants.output_directory(), exist_ok=True)
-    save_to_disk_in_batches(dataset_array, Constants.batch_size(), Constants.output_directory())
