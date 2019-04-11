@@ -22,7 +22,8 @@ def resize_to_std_resolution(path_to_dataset):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if ('LOCAL' not in os.environ) and len(sys.argv) != 2:
         print('Usage: python prepare_dataset.py <path_to_dataset>')
     else:
-        resize_to_std_resolution(sys.argv[1])
+        path = sys.argv[1] if len(sys.argv) == 2 else 'dataset'
+        resize_to_std_resolution(path)
