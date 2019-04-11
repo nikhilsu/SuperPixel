@@ -2,9 +2,10 @@
 Replicating the Super Resolution paper - https://arxiv.org/pdf/1707.00737.pdf
 
 #### Dependencies
-- ```OpenCV```
-- ```Keras```
-- ```Numpy```
+`pip install -r ../requirements.txt`
+- `OpenCV`
+- `Keras`
+- `Numpy`
 
 #### Create Dataset
 
