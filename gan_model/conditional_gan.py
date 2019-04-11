@@ -1,7 +1,7 @@
 from keras import Input, Model
 
-from config import Config
-from gancomponent import GANComponent
+from gan_model.config import Config
+from gan_model.gancomponent import GANComponent
 
 
 class CGAN(GANComponent):

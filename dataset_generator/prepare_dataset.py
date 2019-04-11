@@ -5,23 +5,9 @@ import sys
 from multiprocessing import Pool
 from multiprocessing import cpu_count
 from tqdm import tqdm
+from constants import Constants
 
 import numpy as np
-
-
-class Constants(object):
-
-    @staticmethod
-    def output_directory():
-        return 'output'
-
-    @staticmethod
-    def default_dataset_path():
-        return 'small_dataset/data'
-
-    @staticmethod
-    def batch_size():
-        return 10000
 
 
 class ResizeImage(object):

@@ -1,8 +1,8 @@
 from keras import Sequential, Input, Model
 from keras.layers import Conv2D, BatchNormalization, Activation, LeakyReLU
 
-from config import Config
-from gancomponent import GANComponent
+from gan_model.config import Config
+from gan_model.gancomponent import GANComponent
 
 
 class Generator(GANComponent):

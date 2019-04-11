@@ -1,7 +1,7 @@
-from conditional_gan import CGAN
-from config import Config
-from discriminator import Discriminator
-from generator import Generator
+from gan_model.conditional_gan import CGAN
+from gan_model.config import Config
+from gan_model.discriminator import Discriminator
+from gan_model.generator import Generator
 import numpy as np
 
 

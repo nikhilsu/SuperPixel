@@ -1,8 +1,8 @@
 from keras import Sequential, Input, Model
 from keras.layers import Dense, Conv2D, BatchNormalization, LeakyReLU, Dropout, ZeroPadding2D, Flatten
 
-from config import Config
-from gancomponent import GANComponent
+from gan_model.config import Config
+from gan_model.gancomponent import GANComponent
 
 
 class Discriminator(GANComponent):

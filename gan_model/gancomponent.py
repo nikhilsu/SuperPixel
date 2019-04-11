@@ -1,4 +1,4 @@
-from config import Config
+from gan_model.config import Config
 
 
 class GANComponent(object):
