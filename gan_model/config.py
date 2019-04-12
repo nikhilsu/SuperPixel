@@ -1,3 +1,4 @@
+import os
 from keras.optimizers import Adam
 
 
@@ -19,16 +20,18 @@ class Config:
         return 32
 
     @staticmethod
-    def epochs(small=False):
+    def epochs():
+        small = 'LOCAL' in os.environ
         return 100 if small else 10000
 
     @staticmethod
     def checkpoint_reached(epoch):
-        return epoch % 1 == 0
+        n = 1 if 'LOCAL' in os.environ else 50
+        return epoch % n == 0
 
     @staticmethod
     def checkpoint_batch_size():
-        return 50
+        return 5
 
     @staticmethod
     def checkpoint_output():

@@ -3,6 +3,7 @@ from gan_model.config import Config
 from gan_model.discriminator import Discriminator
 from gan_model.generator import Generator
 from tqdm import tqdm
+from matplotlib import pyplot as plt
 
 import numpy as np
 import os
@@ -18,25 +19,29 @@ def de_normalize_image(image):
     return 127.5 * image + 127.5
 
 
-def flush_image_pair_to_disk(generator, image_pairs, i):
+def flush_image_pair_to_disk(generator, image_pairs, e):
     low_res, high_res = image_pairs
     generated_images = generator.predict(low_res)
 
-    # Rescale image
     generated_images = de_normalize_image(generated_images)
     low_res = de_normalize_image(low_res)
     high_res = de_normalize_image(high_res)
     os.makedirs(Config.checkpoint_output(), exist_ok=True)
-    checkpoint_dir = os.path.join(Config.checkpoint_output(), str(i))
-    os.makedirs(checkpoint_dir)
+    checkpoint_dir = os.path.join(Config.checkpoint_output(), str(e))
+    os.makedirs(checkpoint_dir, exist_ok=True)
 
-    for i in range(len(low_res)):
-        input_image = low_res[i].astype(int)
-        generated_image = generated_images[i].astype(int)
-        ground_truth = high_res[i].astype(int)
-        cv2.imwrite(os.path.join(checkpoint_dir, 'input_{}.jpg'.format(i)), input_image)
-        cv2.imwrite(os.path.join(checkpoint_dir, 'generated_{}.jpg'.format(i)), generated_image)
-        cv2.imwrite(os.path.join(checkpoint_dir, 'ground_truth_{}.jpg'.format(i)), ground_truth)
+    for j in range(len(low_res)):
+        image_triplet = [low_res[j].astype('uint8'), generated_images[j].astype('uint8'), high_res[j].astype('uint8')]
+        names = ['Low Resolution', 'Generated Image', 'Ground Truth']
+
+        fig, axes = plt.subplots(nrows=1, ncols=3)
+        for k, axis in enumerate(axes):
+            axis.imshow(cv2.cvtColor(image_triplet[k], cv2.COLOR_BGR2RGB))
+            axis.set_title(names[k])
+            axis.axis('off')
+
+        fig.savefig(os.path.join(checkpoint_dir, 'checkpoint_{}.jpg'.format(j)))
+        plt.close()
 
 
 def train(dataset_path):
