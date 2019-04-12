@@ -6,6 +6,7 @@ Replicating the Super Resolution paper - https://arxiv.org/pdf/1707.00737.pdf
 - `OpenCV`
 - `Keras`
 - `Numpy`
+- `Matplotlib`
 
 ##### Prior to training
 - Ensure the [dataset](https://drive.google.com/drive/folders/1GSaVehKdBp8NWG-QYJ_2nX6fiOFr5Z5H?usp=sharing) is downloaded into the project directory
