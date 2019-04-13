@@ -40,7 +40,7 @@ def flush_image_pair_to_disk(generator, image_pairs, e):
             axis.set_title(names[k])
             axis.axis('off')
 
-        fig.savefig(os.path.join(checkpoint_dir, 'checkpoint_{}.jpg'.format(j)))
+        fig.savefig(os.path.join(checkpoint_dir, 'checkpoint_{}.png'.format(j)))
         plt.close()
 
 
