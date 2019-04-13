@@ -44,24 +44,18 @@ def flush_image_pair_to_disk(generator, image_pairs, e):
         plt.close()
 
 
-def train(dataset_path):
+def train(path_to_dataset):
     generator, discriminator = Generator(), Discriminator()
     gan = CGAN(generator, discriminator)
     gan.compile_model()
-    dataset = np.load(dataset_path)
-
-    # Normalize input
-    dataset = normalize_image(dataset)
+    arrays_names = [os.path.join(path_to_dataset, file) for file in next(os.walk(path_to_dataset))[2] if
+                    file.endswith('.npy')]
 
     real = np.ones((Config.batch_size(), 1))
     fake = np.zeros((Config.batch_size(), 1))
 
     for epoch in tqdm(range(Config.epochs()), desc='Training Epochs'):
-        np.random.shuffle(dataset)
-        batch = dataset[:Config.batch_size()]
-        batch = [(low, high) for low, high in batch]
-        low_res, high_res = [np.array(tup) for tup in zip(*batch)]
-        del batch[:]
+        low_res, high_res = get_random_samples(arrays_names)
 
         generated_images = generator.predict(low_res)
         valid_loss = discriminator.train_on_batch(high_res, real)
@@ -74,8 +68,21 @@ def train(dataset_path):
         print('{} -> Disc loss: {:0.8f}, acc.: {:0.2f}, Gen loss: {:0.8f}'.format(epoch, loss, acc, g_loss))
 
         if Config.checkpoint_reached(epoch):
-            random_samples = np.random.randint(0, Config.batch_size(), Config.checkpoint_batch_size())
-            flush_image_pair_to_disk(generator, [low_res[random_samples], high_res[random_samples]], epoch)
+            flush_image_pair_to_disk(generator, get_random_samples(arrays_names, Config.checkpoint_batch_size()), epoch)
+
+
+def get_random_samples(np_arrays, batch_size=Config.batch_size()):
+    dataset_path = np.random.choice(np_arrays)
+    dataset = np.load(dataset_path)
+    np.random.shuffle(dataset)
+
+    batch = dataset[:batch_size]
+    del dataset
+    batch = normalize_image(batch)
+    batch = [(low, high) for low, high in batch]
+    low_res, high_res = [np.array(tup) for tup in zip(*batch)]
+    del batch[:]
+    return low_res, high_res
 
 
 if __name__ == '__main__':
@@ -83,5 +90,5 @@ if __name__ == '__main__':
         print('Usage: python prepare_dataset.py <path_to_dataset>')
         sys.exit(1)
 
-    path = sys.argv[1] if len(sys.argv) == 2 else 'dataset/100.npy'
+    path = sys.argv[1] if len(sys.argv) == 2 else 'dataset'
     train(path)
