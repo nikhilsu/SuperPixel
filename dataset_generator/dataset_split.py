@@ -15,11 +15,19 @@ def split_combination(np_array_path):
 
 
 def split_half(np_array_path):
-    np_array = np.load(np_array_path)
-    split_index = int(len(np_array) / 2)
-    file_name, ext = os.path.splitext(np_array_path)
-    np.save('{}_0{}'.format(file_name, ext), np_array[:split_index])
-    np.save('{}_1{}'.format(file_name, ext), np_array[split_index:])
+    np_arrays = [np_array_path]
+    if os.path.isdir(np_array_path):
+        np_arrays = [os.path.join(np_array_path, file) for file in next(os.walk(np_array_path))[2] if
+                     file.endswith('.npy')]
+
+    for arr_path in np_arrays:
+        np_array = np.load(arr_path)
+        split_index = int(len(np_array) / 2)
+        file_name, ext = os.path.splitext(np_array_path)
+        np.save('{}_0{}'.format(file_name, ext), np_array[:split_index])
+        np.save('{}_1{}'.format(file_name, ext), np_array[split_index:])
+        os.remove(arr_path)
+        print('Deleted file: ' + arr_path)
 
 
 if __name__ == '__main__':
