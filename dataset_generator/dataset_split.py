@@ -23,9 +23,13 @@ def split_half(np_array_path):
     for arr_path in np_arrays:
         np_array = np.load(arr_path)
         split_index = int(len(np_array) / 2)
-        file_name, ext = os.path.splitext(np_array_path)
-        np.save('{}_0{}'.format(file_name, ext), np_array[:split_index])
-        np.save('{}_1{}'.format(file_name, ext), np_array[split_index:])
+        file_name, ext = os.path.splitext(arr_path)
+        file1 = '{}_0{}'.format(file_name, ext)
+        file2 = '{}_1{}'.format(file_name, ext)
+        np.save(file1, np_array[:split_index])
+        np.save(file2, np_array[split_index:])
+        print('Saved file1: ' + file1)
+        print('Saved file2: ' + file2)
         os.remove(arr_path)
         print('Deleted file: ' + arr_path)
 
