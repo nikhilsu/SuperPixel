@@ -9,7 +9,7 @@ Replicating the Super Resolution paper - https://arxiv.org/pdf/1707.00737.pdf
 - `Matplotlib`
 
 ##### Prior to training
-- Ensure the [dataset](https://drive.google.com/drive/folders/1GSaVehKdBp8NWG-QYJ_2nX6fiOFr5Z5H?usp=sharing) is downloaded into the project directory
+- Ensure the [dataset](https://drive.google.com/file/d/1lPZzXfoacc-5V99avIJ8XOo4sak-dHCp/view?usp=sharing) is downloaded into the project directory
 - The dataset directory should look like the following
 ```
 |--- dataset
