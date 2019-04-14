@@ -22,11 +22,11 @@ class Config:
     @staticmethod
     def epochs():
         small = 'LOCAL' in os.environ
-        return 100 if small else 10000
+        return 100 if small else 60000
 
     @staticmethod
     def checkpoint_reached(epoch):
-        n = 1 if 'LOCAL' in os.environ else 50
+        n = 1 if 'LOCAL' in os.environ else 1000
         return epoch % n == 0
 
     @staticmethod
